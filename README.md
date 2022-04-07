@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Money Go Where?
 
-## Getting Started
+An expense tracker website built using React and other libraries
 
-First, run the development server:
+## Usage
 
-```bash
-npm run dev
-# or
-yarn dev
+Run on development server with `npm`
+
+```
+$ npm i
+$ npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Built using
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Next.js
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+-   [![next](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/next?style=flat-square)](https://npmjs.com/package/next)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### React
 
-## Learn More
+-   [![react](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react?style=flat-square)](https://npmjs.com/package/react)
+-   [![react-dom](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-dom?style=flat-square)](https://npmjs.com/package/react-dom)
 
-To learn more about Next.js, take a look at the following resources:
+### Material-UI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [![@emotion/react](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@emotion/react?style=flat-square)](https://npmjs.com/package/@emotion/react)
+-   [![@emotion/styled](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@emotion/styled?style=flat-square)](https://npmjs.com/package/@emotion/styled)
+-   [![@mui/icons-material](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@mui/icons-material?style=flat-square)](https://npmjs.com/package/@mui/icons-material)
+-   [![@mui/material](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@mui/material?style=flat-square)](https://npmjs.com/package/@mui/material)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Firebase
 
-## Deploy on Vercel
+-   [![firebase](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/firebase?style=flat-square)](https://npmjs.com/package/firebase)
+-   [![react-firebase-hooks](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-firebase-hooks?style=flat-square)](https://npmjs.com/package/react-firebase-hooks)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Chart.js
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   [![chart.js](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/chart.js?style=flat-square)](https://npmjs.com/package/chart.js)
+
+### miscellaneous
+
+-   [![date-fns](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/date-fns?style=flat-square)](https://npmjs.com/package/date-fns)
+-   [![lodash](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/lodash?style=flat-square)](https://npmjs.com/package/lodash)
+-   [![numeral](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/numeral?style=flat-square)](https://npmjs.com/package/numeral)

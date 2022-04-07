@@ -14,16 +14,15 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 
 // Next
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 // Firebase
 import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../utils/firebase";
 
 const Home = () => {
-    const [user, loading, error] = useAuthState(auth);
     const router = useRouter();
 
     const handleGoogle = () => {
@@ -36,13 +35,12 @@ const Home = () => {
                     setDoc(doc(firestore, "users", user.uid), {
                         displayName: user.displayName,
                     });
-                    router.push("/dashboard");
                 }
+                router.push("/dashboard");
             })
-            .catch((error) => {
+            .catch(({ code }) => {
                 // Handle Errors here.
-                const errorCode = error.code;
-                console.log(errorCode);
+                console.log(code);
             });
     };
 
@@ -56,52 +54,41 @@ const Home = () => {
                     setDoc(doc(firestore, "users", user.uid), {
                         displayName: user.displayName,
                     });
-                    router.push("/dashboard");
                 }
+                router.push("/dashboard");
             })
-            .catch((error) => {
+            .catch(({ code }) => {
                 // Handle Errors here.
-                const errorCode = error.code;
-                console.log(errorCode);
+                console.log(code);
             });
     };
-
-    if (loading) {
-        return (
-            <Box sx={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <CircularProgress />
-            </Box>
-        );
-    } else if (user) {
-        router.push("/dashboard");
-        return (
-            <Box sx={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <CircularProgress />
-            </Box>
-        );
-    } else {
-        return (
-            <Container maxwidth="xs">
-                <Display>
-                    <Stack direction="column" spacing={2} sx={{ width: 300 }}>
-                        <EmailButton variant="contained" startIcon={<EmailIcon />} fullWidth>
-                            <Link href="/auth">
-                                <a>
-                                    <Typography color="white">Continue using Email</Typography>
-                                </a>
-                            </Link>
-                        </EmailButton>
-                        <GoogleButton variant="contained" startIcon={<GoogleIcon />} onClick={handleGoogle} fullWidth>
-                            <Typography>Continue using Google</Typography>
-                        </GoogleButton>
-                        <GithubButton variant="contained" startIcon={<GitHubIcon />} onClick={handleGithub} fullWidth>
-                            <Typography>Continue using Github</Typography>
-                        </GithubButton>
-                    </Stack>
-                </Display>
-            </Container>
-        );
-    }
+    return (
+        <Container maxwidth="xs">
+            <Display>
+                <Box sx={{ mt: -10, p: 4, display: "flex", alignItems: "center" }}>
+                    <Image src="/icon.svg" width={50} height={50} />
+                    <Typography variant="h5" sx={{ ml: 2 }}>
+                        Money Go Where?
+                    </Typography>
+                </Box>
+                <Stack direction="column" spacing={2} sx={{ width: 300 }}>
+                    <EmailButton variant="contained" startIcon={<EmailIcon />} fullWidth>
+                        <Link href="/auth">
+                            <a>
+                                <Typography color="white">Continue using Email</Typography>
+                            </a>
+                        </Link>
+                    </EmailButton>
+                    <GoogleButton variant="contained" startIcon={<GoogleIcon />} onClick={handleGoogle} fullWidth>
+                        <Typography>Continue using Google</Typography>
+                    </GoogleButton>
+                    <GithubButton variant="contained" startIcon={<GitHubIcon />} onClick={handleGithub} fullWidth>
+                        <Typography>Continue using Github</Typography>
+                    </GithubButton>
+                </Stack>
+            </Display>
+        </Container>
+    );
 };
 
 export default Home;
@@ -112,6 +99,7 @@ const Display = styled(Box)(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
 }));
 
 const EmailButton = styled(Button)(({ theme }) => ({

@@ -15,9 +15,13 @@ import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 
+// Next
+import { useRouter } from "next/router";
+
 const SignIn = ({ setState }) => {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,16 +29,20 @@ const SignIn = ({ setState }) => {
         const email = data.get("email");
         const password = data.get("password");
 
-        signInWithEmailAndPassword(auth, email, password).catch(({ code: errorCode }) => {
-            if (errorCode == "auth/invalid-email" || errorCode == "auth/user-not-found") {
-                setEmailError(true);
-                setPasswordError(false);
-            }
-            if (errorCode == "auth/wrong-password") {
-                setEmailError(false);
-                setPasswordError(true);
-            }
-        });
+        signInWithEmailAndPassword(auth, email, password)
+            .then(({ user }) => {
+                router.push("/dashboard");
+            })
+            .catch(({ code: errorCode }) => {
+                if (errorCode == "auth/invalid-email" || errorCode == "auth/user-not-found") {
+                    setEmailError(true);
+                    setPasswordError(false);
+                }
+                if (errorCode == "auth/wrong-password") {
+                    setEmailError(false);
+                    setPasswordError(true);
+                }
+            });
     };
 
     return (

@@ -4,26 +4,7 @@ import Button from "@mui/material/Button";
 
 // Firebase
 import { auth } from "../utils/firebase";
-import { signOut, getAuth } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-
-export function getServerSideProps(context) {
-    // if (auth.currentUser) {
-    //     return {
-    //         props: {}, // will be passed to the page component as props
-    //     };
-    // } else {
-    //     return {
-    //         redirect: {
-    //             destination: "/",
-    //             permanent: false,
-    //         },
-    //     };
-    // }
-    return {
-        props: {}, // will be passed to the page component as props
-    };
-}
+import { signOut } from "firebase/auth";
 
 const Dashboard = (props) => {
     return (
