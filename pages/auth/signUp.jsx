@@ -24,10 +24,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../../utils/firebase";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -58,13 +60,17 @@ const SignUp = () => {
             });
     };
 
+    const handleBack = () => {
+        router.push("/");
+    };
+
     return (
         <>
             <Head>
                 <meta name="description" content="Sign up with Money Go Where using email and password" />
                 <title>MgW | Sign Up</title>
             </Head>
-            <IconButton sx={{ mt: 4, ml: { xs: 2, sm: 4 } }}>
+            <IconButton sx={{ mt: 4, ml: { xs: 2, sm: 4 } }} onClick={handleBack} aria-label="Back to log in options">
                 <ArrowBackIcon />
             </IconButton>
             <Container component="main" maxWidth="xs">
