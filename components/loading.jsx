@@ -10,6 +10,8 @@ const Loading = () => {
         <>
             <Head>
                 <title>MgW</title>
+                <meta name="description" content="Loading" />
+                <link rel="icon" href="/icon.svg" />
             </Head>
             <Box sx={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <CircularProgress />

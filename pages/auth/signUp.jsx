@@ -21,7 +21,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 // Firebase
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../../utils/firebase";
 import { useRouter } from "next/router";
@@ -43,6 +43,11 @@ const SignUp = () => {
                 setDoc(doc(firestore, "users", user.uid), {
                     displayName: displayName,
                 });
+
+                updateProfile(user, {
+                    displayName: displayName,
+                });
+                router.push("/dashboard");
             })
             .catch(({ code: errorCode }) => {
                 if (errorCode == "auth/invalid-email" || errorCode == "auth/email-already-in-use") {

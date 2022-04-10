@@ -2,9 +2,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-// React
-import { useEffect } from "react";
-
 // Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
@@ -26,6 +23,7 @@ const AuthLayout = ({ children }) => {
             return (
                 <Head>
                     <link rel="icon" href="/icon.svg" />
+                    <title>MgW</title>
                 </Head>
             );
         } else {
@@ -55,6 +53,7 @@ const AuthLayout = ({ children }) => {
             return (
                 <Head>
                     <link rel="icon" href="/icon.svg" />
+                    <title>MgW</title>
                 </Head>
             );
         }

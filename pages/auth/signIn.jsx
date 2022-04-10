@@ -35,16 +35,20 @@ const SignIn = () => {
         const email = data.get("email");
         const password = data.get("password");
 
-        signInWithEmailAndPassword(auth, email, password).catch(({ code: errorCode }) => {
-            if (errorCode == "auth/invalid-email" || errorCode == "auth/user-not-found") {
-                setEmailError(true);
-                setPasswordError(false);
-            }
-            if (errorCode == "auth/wrong-password") {
-                setEmailError(false);
-                setPasswordError(true);
-            }
-        });
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                router.push("/dashboard");
+            })
+            .catch(({ code: errorCode }) => {
+                if (errorCode == "auth/invalid-email" || errorCode == "auth/user-not-found") {
+                    setEmailError(true);
+                    setPasswordError(false);
+                }
+                if (errorCode == "auth/wrong-password") {
+                    setEmailError(false);
+                    setPasswordError(true);
+                }
+            });
     };
 
     const handleBack = () => {

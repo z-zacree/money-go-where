@@ -1,7 +1,6 @@
 // Next
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 // Material
@@ -17,20 +16,15 @@ import { styled } from "@mui/material/styles";
 import EmailIcon from "@mui/icons-material/Email";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import Icon from "../public/icon.svg";
 
 // Firebase
 import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../utils/firebase";
 
-import Icon from "../public/icon.svg";
-
 const Home = () => {
     const router = useRouter();
-
-    const handleEmail = () => {
-        router.push("/auth/signIn");
-    };
 
     const handleGoogle = () => {
         const provider = new GoogleAuthProvider();
@@ -93,9 +87,12 @@ const Home = () => {
                         </Typography>
                     </Box>
                     <Stack direction="column" spacing={2} sx={{ width: 300 }}>
-                        <EmailButton variant="contained" startIcon={<EmailIcon />} onClick={handleEmail} fullWidth>
-                            <Typography>Continue using Email</Typography>
-                        </EmailButton>
+                        <Link href="/auth/signIn" passHref>
+                            <EmailButton variant="contained" startIcon={<EmailIcon />} fullWidth>
+                                <Typography>Continue using Email</Typography>
+                            </EmailButton>
+                        </Link>
+
                         <GoogleButton variant="contained" startIcon={<GoogleIcon />} onClick={handleGoogle} fullWidth>
                             <Typography>Continue using Google</Typography>
                         </GoogleButton>
