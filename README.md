@@ -43,3 +43,4 @@ $ npm run dev
 -   [![date-fns](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/date-fns?style=flat-square)](https://npmjs.com/package/date-fns)
 -   [![lodash](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/lodash?style=flat-square)](https://npmjs.com/package/lodash)
 -   [![numeral](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/numeral?style=flat-square)](https://npmjs.com/package/numeral)
+-   [![@svgr/webpack](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@svgr/webpack?style=flat-square)](https://npmjs.com/package/@svgr/webpack)

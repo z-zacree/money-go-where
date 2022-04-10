@@ -1,8 +1,14 @@
+// Next
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
+
 // Material
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -12,18 +18,19 @@ import EmailIcon from "@mui/icons-material/Email";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
-// Next
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-
 // Firebase
-import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../utils/firebase";
 
+import Icon from "../public/icon.svg";
+
 const Home = () => {
     const router = useRouter();
+
+    const handleEmail = () => {
+        router.push("/auth/signIn");
+    };
 
     const handleGoogle = () => {
         const provider = new GoogleAuthProvider();
@@ -38,9 +45,12 @@ const Home = () => {
                 }
                 router.push("/dashboard");
             })
-            .catch(({ code }) => {
+            .catch(async ({ code, customData }) => {
                 // Handle Errors here.
-                console.log(code);
+                if (code == "auth/account-exists-with-different-credential") {
+                    const methods = await fetchSignInMethodsForEmail(auth, customData.email);
+                    console.log(methods);
+                }
             });
     };
 
@@ -57,37 +67,45 @@ const Home = () => {
                 }
                 router.push("/dashboard");
             })
-            .catch(({ code }) => {
+            .catch(async ({ code, customData }) => {
                 // Handle Errors here.
-                console.log(code);
+                if (code == "auth/account-exists-with-different-credential") {
+                    const methods = await fetchSignInMethodsForEmail(auth, customData.email);
+                    if (methods[0] == "google.com") handleGoogle();
+                }
             });
     };
     return (
-        <Container maxwidth="xs">
-            <Display>
-                <Box sx={{ mt: -10, p: 4, display: "flex", alignItems: "center" }}>
-                    <Image src="/icon.svg" width={50} height={50} />
-                    <Typography variant="h5" sx={{ ml: 2 }}>
-                        Money Go Where?
-                    </Typography>
-                </Box>
-                <Stack direction="column" spacing={2} sx={{ width: 300 }}>
-                    <EmailButton variant="contained" startIcon={<EmailIcon />} fullWidth>
-                        <Link href="/auth">
-                            <a>
-                                <Typography color="white">Continue using Email</Typography>
-                            </a>
-                        </Link>
-                    </EmailButton>
-                    <GoogleButton variant="contained" startIcon={<GoogleIcon />} onClick={handleGoogle} fullWidth>
-                        <Typography>Continue using Google</Typography>
-                    </GoogleButton>
-                    <GithubButton variant="contained" startIcon={<GitHubIcon />} onClick={handleGithub} fullWidth>
-                        <Typography>Continue using Github</Typography>
-                    </GithubButton>
-                </Stack>
-            </Display>
-        </Container>
+        <>
+            <Head>
+                <meta name="description" content="Choose which authentication provider to log in with" />
+                <title>MgW | Login</title>
+            </Head>
+            <Container maxwidth="xs">
+                <Display>
+                    <Box sx={{ mt: -10, p: 4, display: "flex", alignItems: "center" }}>
+                        <IconContainer>
+                            <Icon />
+                        </IconContainer>
+                        <Divider orientation="vertical" variant="middle" flexItem />
+                        <Typography variant="h5" sx={{ pl: 1 }}>
+                            Money Go Where?
+                        </Typography>
+                    </Box>
+                    <Stack direction="column" spacing={2} sx={{ width: 300 }}>
+                        <EmailButton variant="contained" startIcon={<EmailIcon />} onClick={handleEmail} fullWidth>
+                            <Typography>Continue using Email</Typography>
+                        </EmailButton>
+                        <GoogleButton variant="contained" startIcon={<GoogleIcon />} onClick={handleGoogle} fullWidth>
+                            <Typography>Continue using Google</Typography>
+                        </GoogleButton>
+                        <GithubButton variant="contained" startIcon={<GitHubIcon />} onClick={handleGithub} fullWidth>
+                            <Typography>Continue using Github</Typography>
+                        </GithubButton>
+                    </Stack>
+                </Display>
+            </Container>
+        </>
     );
 };
 
@@ -107,9 +125,9 @@ const EmailButton = styled(Button)(({ theme }) => ({
     height: 40,
     textTransform: "none",
     color: "white",
-    backgroundColor: "rgb(219, 68, 55)",
+    backgroundColor: "rgb(208, 2, 27)",
     ":hover": {
-        backgroundColor: "rgba(219, 68, 55, 0.6)",
+        backgroundColor: "rgba(208, 2, 27, 0.7)",
     },
 }));
 
@@ -120,7 +138,7 @@ const GoogleButton = styled(Button)(({ theme }) => ({
     color: "black",
     backgroundColor: "rgb(255, 255, 255)",
     ":hover": {
-        backgroundColor: "rgba(255, 255, 255, 0.6)",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
     },
 }));
 
@@ -131,6 +149,15 @@ const GithubButton = styled(Button)(({ theme }) => ({
     color: "white",
     backgroundColor: "rgb(36, 41, 46)",
     ":hover": {
-        backgroundColor: "rgba(36, 41, 46, 0.6)",
+        backgroundColor: "rgba(36, 41, 46, 0.9)",
     },
+}));
+
+const IconContainer = styled(Box)(({ theme }) => ({
+    width: 50,
+    height: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 8,
 }));

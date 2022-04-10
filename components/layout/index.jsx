@@ -18,14 +18,13 @@ const AuthLayout = ({ children }) => {
         router = useRouter(),
         pathname = router.pathname;
 
-    if (pathname == "/" || pathname == "/auth") {
+    if (pathname === "/" || pathname === "/auth/signIn" || pathname === "/auth/signUp") {
         if (loading) {
             return <Loading />;
         } else if (user) {
             router.push("/dashboard");
             return (
                 <Head>
-                    <meta name="content" content="money-go-where" />
                     <link rel="icon" href="/icon.svg" />
                 </Head>
             );
@@ -33,35 +32,34 @@ const AuthLayout = ({ children }) => {
             return (
                 <>
                     <Head>
-                        <meta name="content" content="money-go-where" />
                         <link rel="icon" href="/icon.svg" />
                     </Head>
                     {children}
                 </>
             );
         }
-    } else {
+    } else if (pathname == "/dashboard") {
         if (loading) {
             return <Loading />;
         } else if (user) {
             return (
                 <>
                     <Head>
-                        <meta name="content" content="money-go-where" />
                         <link rel="icon" href="/icon.svg" />
                     </Head>
-                    <Layout>{children}</Layout>
+                    <Layout user={user}>{children}</Layout>
                 </>
             );
         } else {
             router.push("/");
             return (
                 <Head>
-                    <meta name="content" content="money-go-where" />
                     <link rel="icon" href="/icon.svg" />
                 </Head>
             );
         }
+    } else {
+        return children;
     }
 };
 

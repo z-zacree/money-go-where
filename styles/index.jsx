@@ -14,13 +14,30 @@ export default function ThemeConfig({ children }) {
                 ...(mode === "dark"
                     ? {
                           main: "#121212",
-                          sub: "#1a1a1a",
-                          card: "#1a1a1a",
+                          contrast: "#ffffff",
                       }
                     : {
                           main: "#ffffff",
-                          sub: "#f2f2f2",
-                          card: "#ffffff",
+                          contrast: "#121212",
+                      }),
+            },
+            blackAndWhite: {
+                ...(mode === "light"
+                    ? {
+                          default: "#ffffff",
+                          alpha80: "rgba(255, 255, 255, 0.8)",
+                          contrast: {
+                              default: "#000000",
+                              alpha80: "rgba(0, 0, 0, 0.8)",
+                          },
+                      }
+                    : {
+                          default: "#000000",
+                          alpha80: "rgba(0, 0, 0, 0.8)",
+                          contrast: {
+                              default: "#ffffff",
+                              alpha80: "rgba(255, 255, 255, 0.8)",
+                          },
                       }),
             },
             navbar: "rgba(0,0,0,0)",
