@@ -11,6 +11,14 @@ $ npm i
 $ npm run dev
 ```
 
+Building to production with `npm`
+
+```
+$ npm i
+$ npm run build
+$ npm run start
+```
+
 ## Built using
 
 ### Next.js
@@ -28,6 +36,7 @@ $ npm run dev
 -   [![@emotion/styled](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@emotion/styled?style=flat-square)](https://npmjs.com/package/@emotion/styled)
 -   [![@mui/icons-material](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@mui/icons-material?style=flat-square)](https://npmjs.com/package/@mui/icons-material)
 -   [![@mui/material](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@mui/material?style=flat-square)](https://npmjs.com/package/@mui/material)
+-   [![@mui/x-date-pickers](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@mui/x-date-pickers?style=flat-square)](https://npmjs.com/package/@mui/x-date-pickers)
 
 ### Firebase
 

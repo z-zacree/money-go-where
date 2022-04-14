@@ -18,10 +18,12 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Switch from "@mui/material/Switch";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+
+// Components
+import ModalC from "./modal";
 
 // Icons
 import AddCardIcon from "@mui/icons-material/AddCard";
@@ -31,11 +33,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import Icon from "../../public/icon.svg";
-import Image from "next/image";
 
 const appbarHeight = 64;
 const drawerWidth = 300;
-
 const pages = [
     { label: "Dashboard", icon: <AppsIcon /> },
     { label: "Accounts", icon: <AddCardIcon /> },
@@ -43,22 +43,20 @@ const pages = [
     { label: "History", icon: <HistoryIcon /> },
 ];
 
-const layout = ({ children, user }) => {
+const Layout = ({ children, user }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const router = useRouter();
 
-    console.log(user);
-
-    const toggleDrawer = (open) => (event) => {
-        if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
-            return;
-        }
-
+    const toggleDrawer = (open) => () => {
         setDrawerOpen(open);
+    };
+    const toggleModal = (open) => () => {
+        setModalOpen(open);
     };
 
     return (
-        <Box>
+        <>
             <AppBar position="static" color="transparent" elevation={0} enableColorOnDark>
                 <Toolbar sx={{ height: appbarHeight }} disableGutters>
                     <IconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} sx={{ m: 1 }}>
@@ -67,8 +65,8 @@ const layout = ({ children, user }) => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Money go Where
                     </Typography>
-                    <Button variant="outlined" color="inherit" sx={{ textTransform: "none", m: 1.5 }}>
-                        Add Task
+                    <Button variant="outlined" color="inherit" onClick={toggleModal(true)} sx={{ textTransform: "none", m: 1.5 }}>
+                        Add Expense
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -105,22 +103,27 @@ const layout = ({ children, user }) => {
                     </List>
                     <List sx={{ position: "absolute", bottom: 0, right: 0, left: 0 }}>
                         <ListItem>
-                            <ListItemButton sx={{ borderRadius: 2 }}>
-                                <ListItemIcon>
-                                    <Avatar>{user.photoURL ? <Image /> : <PersonIcon />}</Avatar>
-                                </ListItemIcon>
-                                <ListItemText primary={user.displayName} />
-                            </ListItemButton>
+                            <Link href="/profile" passHref>
+                                <ListItemButton sx={{ borderRadius: 2 }} selected={router.pathname == "/profile"}>
+                                    <ListItemIcon>
+                                        <Avatar alt={`user.displayName`} src={user.photoURL ? user.photoURL : null}>
+                                            {user.photoURL ? null : <PersonIcon />}
+                                        </Avatar>
+                                    </ListItemIcon>
+                                    <ListItemText primary={user.displayName} />
+                                </ListItemButton>
+                            </Link>
                         </ListItem>
                     </List>
                 </Box>
             </SwipeableDrawer>
             <ChildrenContainer>{children}</ChildrenContainer>
-        </Box>
+            <ModalC state={modalOpen} setState={setModalOpen} user={user} />
+        </>
     );
 };
 
-export default layout;
+export default Layout;
 
 const ChildrenContainer = styled(Box)(({ theme }) => ({
     width: "100vw",

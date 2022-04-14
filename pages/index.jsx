@@ -20,8 +20,9 @@ import Icon from "../public/icon.svg";
 
 // Firebase
 import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, firestore } from "../utils/firebase";
+import { fDate } from "../utils/date";
 
 const Home = () => {
     const router = useRouter();
@@ -34,7 +35,40 @@ const Home = () => {
                 const docRef = await getDoc(doc(firestore, "users", user.uid));
                 if (!docRef.exists()) {
                     setDoc(doc(firestore, "users", user.uid), {
-                        displayName: user.displayName,
+                        categories: {
+                            expenses: [
+                                "Food & Beverage",
+                                "Bills & Utilities",
+                                "Transportation",
+                                "Shopping",
+                                "Entertainment",
+                                "Friends & Family",
+                                "Travel",
+                                "Health & Fitness",
+                                "Gifts & Donations",
+                                "Education",
+                                "Investments",
+                                "Business",
+                                "Insurances",
+                                "Withdrawals",
+                                "Loans",
+                                "Others",
+                            ],
+                            income: ["Salary", "Gifts", "Sales", "Awards", "Investments", "Deposits", "Debt Collection", "Others"],
+                        },
+                        accounts: {
+                            wallet: {
+                                balance: 10,
+                                transactions: [
+                                    {
+                                        amount: 10,
+                                        category: "Starting Balance",
+                                        createdAt: Timestamp.fromDate(new Date()),
+                                        notes: `wallet created on ${fDate(new Date())} with a starting balance of 0`,
+                                    },
+                                ],
+                            },
+                        },
                     });
                 }
                 router.push("/dashboard");
@@ -56,7 +90,40 @@ const Home = () => {
                 const docRef = await getDoc(doc(firestore, "users", user.uid));
                 if (!docRef.exists()) {
                     setDoc(doc(firestore, "users", user.uid), {
-                        displayName: user.displayName,
+                        categories: {
+                            expenses: [
+                                "Food & Beverage",
+                                "Bills & Utilities",
+                                "Transportation",
+                                "Shopping",
+                                "Entertainment",
+                                "Friends & Family",
+                                "Travel",
+                                "Health & Fitness",
+                                "Gifts & Donations",
+                                "Education",
+                                "Investments",
+                                "Business",
+                                "Insurances",
+                                "Withdrawals",
+                                "Loans",
+                                "Others",
+                            ],
+                            income: ["Salary", "Gifts", "Sales", "Awards", "Investments", "Deposits", "Debt Collection", "Others"],
+                        },
+                        accounts: {
+                            wallet: {
+                                balance: 10,
+                                transactions: [
+                                    {
+                                        amount: 10,
+                                        category: "Starting Balance",
+                                        createdAt: Timestamp.fromDate(new Date()),
+                                        notes: `wallet created on ${fDate(new Date())} with a starting balance of 0`,
+                                    },
+                                ],
+                            },
+                        },
                     });
                 }
                 router.push("/dashboard");

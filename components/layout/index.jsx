@@ -11,7 +11,7 @@ import Loading from "../loading";
 import Layout from "./layout";
 
 const AuthLayout = ({ children }) => {
-    const [user, loading, error] = useAuthState(auth),
+    const [user, loading] = useAuthState(auth),
         router = useRouter(),
         pathname = router.pathname;
 

@@ -22,9 +22,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 // Firebase
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, firestore } from "../../utils/firebase";
 import { useRouter } from "next/router";
+
+// Components
+import { fDate } from "../../utils/date";
 
 const SignUp = () => {
     const [emailError, setEmailError] = useState(false);
@@ -41,7 +44,40 @@ const SignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async ({ user }) => {
                 setDoc(doc(firestore, "users", user.uid), {
-                    displayName: displayName,
+                    categories: {
+                        expenses: [
+                            "Food & Beverage",
+                            "Bills & Utilities",
+                            "Transportation",
+                            "Shopping",
+                            "Entertainment",
+                            "Friends & Family",
+                            "Travel",
+                            "Health & Fitness",
+                            "Gifts & Donations",
+                            "Education",
+                            "Investments",
+                            "Business",
+                            "Insurances",
+                            "Withdrawals",
+                            "Loans",
+                            "Others",
+                        ],
+                        income: ["Salary", "Gifts", "Sales", "Awards", "Investments", "Deposits", "Debt Collection", "Others"],
+                    },
+                    accounts: {
+                        wallet: {
+                            balance: 10,
+                            transactions: [
+                                {
+                                    amount: 10,
+                                    category: "Starting Balance",
+                                    createdAt: Timestamp.fromDate(new Date()),
+                                    notes: `wallet created on ${fDate(new Date())} with a starting balance of 0`,
+                                },
+                            ],
+                        },
+                    },
                 });
 
                 updateProfile(user, {
