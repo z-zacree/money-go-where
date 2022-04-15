@@ -71,7 +71,7 @@ const SignUp = () => {
                             transactions: [
                                 {
                                     amount: 10,
-                                    category: "Starting Balance",
+                                    category: ["Starting Balance"],
                                     createdAt: Timestamp.fromDate(new Date()),
                                     notes: `wallet created on ${fDate(new Date())} with a starting balance of 0`,
                                 },
