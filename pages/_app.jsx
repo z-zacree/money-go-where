@@ -2,7 +2,7 @@
 import ThemeConfig from "../styles/index";
 
 // Components
-import AuthLayout from "../components/layout";
+import { AuthLayout } from "../components";
 
 function MyApp({ Component, pageProps }) {
     return (

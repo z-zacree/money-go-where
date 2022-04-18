@@ -52,7 +52,7 @@ const pages = [
 const Layout = ({ children, user }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [fields, loading, error] = useDocumentData(doc(firestore, "users", user.uid));
+    const [fields, loading] = useDocumentData(doc(firestore, "users", user.uid));
     const router = useRouter();
 
     const toggleDrawer = (open) => () => {
@@ -62,7 +62,7 @@ const Layout = ({ children, user }) => {
         setModalOpen(open);
     };
     if (loading) return <Loading />;
-    if (fields) {
+    else if (fields) {
         return (
             <>
                 <AppBar position="static" color="transparent" elevation={0} enableColorOnDark>
@@ -78,7 +78,7 @@ const Layout = ({ children, user }) => {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <SwipeableDrawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
+                <SwipeableDrawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)} disableSwipeToOpen>
                     <Box sx={{ width: drawerWidth, height: "100%" }}>
                         <List>
                             <ListItem sx={{ mb: 1, height: 64, pl: 3 }}>
@@ -114,9 +114,13 @@ const Layout = ({ children, user }) => {
                                 <Link href="/profile" passHref>
                                     <ListItemButton sx={{ borderRadius: 2 }} selected={router.pathname == "/profile"}>
                                         <ListItemIcon>
-                                            <Avatar alt={`user.displayName`} src={user.photoURL ? user.photoURL : null}>
-                                                {user.photoURL ? null : <PersonIcon />}
-                                            </Avatar>
+                                            {user.photoURL ? (
+                                                <Avatar alt={user.displayName} src={user.photoURL} />
+                                            ) : (
+                                                <Avatar alt={user.displayName}>
+                                                    <PersonIcon />
+                                                </Avatar>
+                                            )}
                                         </ListItemIcon>
                                         <ListItemText primary={user.displayName} />
                                     </ListItemButton>

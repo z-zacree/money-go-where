@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // Material UI
 import Autocomplete from "@mui/material/Autocomplete";
@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
+import InputAdornment from "@mui/material/InputAdornment";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
@@ -21,14 +22,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 // Icons
 import CloseIcon from "@mui/icons-material/Close";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
+import CompareArrowsRoundedIcon from "@mui/icons-material/CompareArrowsRounded";
 
 // Firebase
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
 // Utils
-import { fCurrency, fNumber } from "../../utils/number.js";
+import { fNum, fDec } from "../../utils/number.js";
 import { fDate } from "../../utils/date";
+import { textTransform } from "@mui/system";
 
 const ModalC = ({ state, setState, fields, doc }) => {
     const [tab, setTab] = useState(0);
@@ -38,74 +43,29 @@ const ModalC = ({ state, setState, fields, doc }) => {
     const [categories, setCategories] = useState([]);
     const [notes, setNotes] = useState("");
 
-    let expenseOptions = [],
-        incomeOptions = [];
+    const options = useMemo(
+        () => Object.entries(fields.categories).map(([key, value]) => value.map((v) => ({ header: key, label: v }))),
+        [fields.categories]
+    );
 
-    Object.keys(fields.categories).map((key) => {
-        fields.categories[key].map((category) => {
-            key == "expenses"
-                ? expenseOptions.push({
-                      header: key,
-                      label: category,
-                  })
-                : incomeOptions.push({
-                      header: key,
-                      label: category,
-                  });
-        });
-    });
-
-    const amountChange = (event) => {
-        let value = event.target.value;
-        if (value) {
-            if (value[0] == 0) value = value.slice(1);
-            isNaN(value) ? false : setAmount(value);
-        } else setAmount("");
-    };
-
-    const categoryChange = (event, newValue) => {
-        if (typeof newValue[newValue.length - 1] == "object") newValue[newValue.length - 1] = newValue[newValue.length - 1].label;
-        setCategories(newValue);
-    };
-
-    const resetForm = () => {
-        setAccount(Object.keys(fields.accounts)[0]);
-        setAmount("");
-        setDate(new Date());
-        setCategories([]);
-        setNotes("");
-    };
-
-    const toggleModal = (open) => () => {
+    const toggleModal = (open) => (e) => {
         setState(open);
-        resetForm();
     };
 
-    const changeTab = (event, tab) => {
-        setTab(tab);
-        resetForm();
-    };
+    const handleAmount = (e) => {
+        const value = e.target.value.replace(/,/gi, "");
+        if (!isNaN(value)) {
+            if (value.includes(".")) {
+                if (value.endsWith(".")) setAmount(fNum(value) + ".");
+                else {
+                    const index = value.indexOf(".");
+                    const dollars = value.slice(0, index);
+                    const cents = value.slice(index + 1, value.length).slice(0, 2);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        let transactions = fields.accounts[account].transactions;
-        let tAmount = parseInt(amount);
-        if (tab == 0) {
-            transactions.push({
-                amount: -tAmount,
-                category: categories,
-                createdAt: Timestamp.fromDate(date),
-                notes: notes ? notes : `Transaction of -${fCurrency(tAmount)} made at ${fDate(date)}`,
-            });
-        } else {
-            transactions.push({
-                amount: tAmount,
-                category: categories,
-                createdAt: Timestamp.fromDate(date),
-                notes: notes ? notes : `Transaction of ${fCurrency(tAmount)} made at ${fDate(date)}`,
-            });
+                    setAmount(fNum(dollars) + "." + cents);
+                }
+            } else setAmount(fNum(value));
         }
-        updateDoc(doc, fields);
     };
 
     return (
@@ -128,156 +88,39 @@ const ModalC = ({ state, setState, fields, doc }) => {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <Tabs value={tab} onChange={changeTab} aria-label="expense or income tab" variant="fullWidth" centered>
-                            <Tab label="Expense" fullWidth />
-                            <Tab label="Income" fullWidth />
-                        </Tabs>
-                    </Box>
-                    <TabPanel value={tab} index={0}>
-                        <Container component="form" sx={{ mt: 4 }} onSubmit={handleSubmit} disableGutters>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} md={4}>
-                                    <Autocomplete
-                                        value={account}
-                                        onChange={(event, newValue) => {
-                                            setAccount(newValue);
-                                        }}
-                                        options={Object.keys(fields.accounts)}
-                                        renderInput={(params) => <CustomTextField {...params} name="account" label="Account" />}
-                                        disableCloseOnSelect
-                                        required
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={4}>
-                                    <CustomTextField
-                                        name="amount"
-                                        label="Amount"
-                                        value={amount}
-                                        onChange={amountChange}
-                                        autoComplete="off"
-                                        required
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={4}>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DatePicker
-                                            renderInput={(props) => <CustomTextField {...props} fullWidth />}
-                                            label="Date"
-                                            value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
-                                        />
-                                    </LocalizationProvider>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Autocomplete
-                                        value={categories}
-                                        onChange={categoryChange}
-                                        options={expenseOptions}
-                                        groupBy={(option) => option.header}
-                                        renderInput={(params) => <CustomTextField {...params} name="categories" label="Categories" />}
-                                        isOptionEqualToValue={(option, value) => option.label === value}
-                                        limitTags={1}
-                                        multiple
-                                        disableCloseOnSelect
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <CustomTextField
-                                        name="note"
-                                        label="Notes"
-                                        value={notes}
-                                        onChange={(event) => setNotes(event.target.value)}
-                                        autoComplete="off"
-                                        multiline
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                                    <SubmitButton type="submit" variant="contained">
-                                        Add expense
-                                    </SubmitButton>
-                                </Grid>
-                            </Grid>
-                        </Container>
-                    </TabPanel>
-                    <TabPanel value={tab} index={1}>
-                        <Container component="form" sx={{ mt: 4 }} onSubmit={handleSubmit} disableGutters>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} md={4}>
-                                    <Autocomplete
-                                        value={account}
-                                        onChange={(event, newValue) => {
-                                            setAccount(newValue);
-                                        }}
-                                        options={Object.keys(fields.accounts)}
-                                        renderInput={(params) => <CustomTextField {...params} name="account" label="Account" />}
-                                        disableCloseOnSelect
-                                        required
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={4}>
-                                    <CustomTextField
-                                        name="amount"
-                                        label="Amount"
-                                        value={amount}
-                                        onChange={amountChange}
-                                        autoComplete="off"
-                                        required
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={4}>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DatePicker
-                                            renderInput={(props) => <CustomTextField {...props} fullWidth />}
-                                            label="Date"
-                                            value={date}
-                                            onChange={(newValue) => {
-                                                setDate(newValue);
-                                            }}
-                                        />
-                                    </LocalizationProvider>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Autocomplete
-                                        value={categories}
-                                        onChange={categoryChange}
-                                        options={incomeOptions}
-                                        groupBy={(option) => option.header}
-                                        renderInput={(params) => <CustomTextField {...params} name="categories" label="Categories" />}
-                                        isOptionEqualToValue={(option, value) => option.label === value}
-                                        limitTags={1}
-                                        multiple
-                                        disableCloseOnSelect
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <CustomTextField
-                                        name="note"
-                                        label="Notes"
-                                        value={notes}
-                                        onChange={(event) => setNotes(event.target.value)}
-                                        autoComplete="off"
-                                        multiline
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                                    <SubmitButton type="submit" variant="contained">
-                                        Add expense
-                                    </SubmitButton>
-                                </Grid>
-                            </Grid>
-                        </Container>
-                    </TabPanel>
+                    <CustomTabs
+                        value={tab}
+                        onChange={(e, newValue) => {
+                            setTab(newValue);
+                        }}
+                        aria-label="expense or income tab"
+                        variant="fullWidth"
+                        sx={{ pb: 2 }}
+                        centered
+                    >
+                        <CustomTab label="Expense" />
+                        <CustomTab label="Income" />
+                        <CustomTab label="Transfer" />
+                    </CustomTabs>
+                    <CustomTextField
+                        value={amount}
+                        onChange={handleAmount}
+                        fullWidth
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {tab == 0 ? (
+                                        <RemoveRoundedIcon sx={{ color: "rgb(255, 0, 0)" }} />
+                                    ) : tab == 1 ? (
+                                        <AddRoundedIcon sx={{ color: "rgb(0, 255, 0)" }} />
+                                    ) : (
+                                        <CompareArrowsRoundedIcon sx={{ color: "white" }} />
+                                    )}
+                                </InputAdornment>
+                            ),
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        }}
+                    />
                 </ModalContainer>
             </Fade>
         </Modal>
@@ -287,9 +130,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
 export default ModalC;
 
 const ModalContainer = styled(Box)(({ theme }) => ({
-    width: "100%",
-    height: "auto",
-    padding: 24,
+    padding: 12,
     borderRadius: 12,
     backgroundColor: theme.palette.background.main,
 }));
@@ -311,21 +152,22 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
-    marginTop: 8,
+const CustomTabs = styled((props) => <Tabs {...props} TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }} />)(
+    ({ theme }) => ({
+        "& .MuiTabs-indicator": {
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "transparent",
+        },
+        "& .MuiTabs-indicatorSpan": {
+            maxWidth: 40,
+            width: "100%",
+            backgroundColor: theme.palette.blackAndWhite.contrast.default,
+        },
+    })
+);
+
+const CustomTab = styled((props) => <Tab {...props} fullWidth disableRipple />)(({ theme }) => ({
     textTransform: "none",
-    backgroundColor: theme.palette.blackAndWhite.contrast.default,
-    ":hover": {
-        backgroundColor: theme.palette.blackAndWhite.contrast.alpha80,
-    },
+    "&.Mui-selected": { color: theme.palette.blackAndWhite.contrast.default },
 }));
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
-            {value === index && children}
-        </div>
-    );
-}
