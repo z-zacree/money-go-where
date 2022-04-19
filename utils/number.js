@@ -22,12 +22,3 @@ export function fShortenNumber(number) {
 export function fData(number) {
     return numeral(number).format("0.0 b");
 }
-
-// Add expense
-
-export function fNum(number) {
-    return numeral(number).format("0,0");
-}
-export function fDec(number) {
-    return numeral(number).format("0,0.00");
-}
