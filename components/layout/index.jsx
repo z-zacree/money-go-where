@@ -36,7 +36,7 @@ const AuthLayout = ({ children }) => {
                 </>
             );
         }
-    } else if (pathname == "/dashboard") {
+    } else if (pathname == "/dashboard" || pathname == "/accounts") {
         if (loading) {
             return <Loading />;
         } else if (user) {

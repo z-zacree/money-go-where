@@ -2,16 +2,23 @@
 import ThemeConfig from "../styles/index";
 
 // Components
-import { AuthLayout } from "../components";
+import { AuthLayout, Loading } from "../components";
+
+// Firebase
+import { auth } from "../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function MyApp({ Component, pageProps }) {
-    return (
-        <ThemeConfig>
-            <AuthLayout>
-                <Component {...pageProps} />
-            </AuthLayout>
-        </ThemeConfig>
-    );
+    const [user, loading] = useAuthState(auth);
+    if (loading) return <Loading />;
+    else
+        return (
+            <ThemeConfig>
+                <AuthLayout>
+                    <Component {...pageProps} user={user} />
+                </AuthLayout>
+            </ThemeConfig>
+        );
 }
 
 export default MyApp;

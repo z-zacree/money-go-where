@@ -29,6 +29,7 @@ $ npm run start
 
 -   [![react](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react?style=flat-square)](https://npmjs.com/package/react)
 -   [![react-dom](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-dom?style=flat-square)](https://npmjs.com/package/react-dom)
+-   [![react-parallax-tilt](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-parallax-tilt?style=flat-square)](https://npmjs.com/package/react-parallax-tilt)
 
 ### Material-UI
 

@@ -2,14 +2,13 @@
 import Head from "next/head";
 
 // Material
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 // Firebase
 import { auth } from "../utils/firebase";
 import { signOut } from "firebase/auth";
 
-const Dashboard = (props) => {
+const Dashboard = ({ user }) => {
     return (
         <>
             <Head>

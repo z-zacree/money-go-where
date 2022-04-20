@@ -50,10 +50,6 @@ const ModalC = ({ state, setState, fields, doc }) => {
         [fields.categories]
     );
 
-    const toggleModal = (open) => (e) => {
-        setState(open);
-    };
-
     const handleClose = () => {
         setState(false);
         resetForm();
