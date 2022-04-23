@@ -2,6 +2,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import { Children } from "react";
+
 // Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
@@ -10,15 +12,12 @@ import { auth } from "../../utils/firebase";
 import Loading from "../loading";
 import Layout from "./layout";
 
-const AuthLayout = ({ children }) => {
-    const [user, loading] = useAuthState(auth),
-        router = useRouter(),
+const AuthLayout = ({ user, fields, children }) => {
+    const router = useRouter(),
         pathname = router.pathname;
 
     if (pathname === "/" || pathname === "/auth/signIn" || pathname === "/auth/signUp") {
-        if (loading) {
-            return <Loading />;
-        } else if (user) {
+        if (user) {
             router.push("/dashboard");
             return (
                 <Head>
@@ -37,15 +36,15 @@ const AuthLayout = ({ children }) => {
             );
         }
     } else if (pathname == "/dashboard" || pathname == "/accounts") {
-        if (loading) {
-            return <Loading />;
-        } else if (user) {
+        if (user) {
             return (
                 <>
                     <Head>
                         <link rel="icon" href="/icon.svg" />
                     </Head>
-                    <Layout user={user}>{children}</Layout>
+                    <Layout user={user} fields={fields}>
+                        {children}
+                    </Layout>
                 </>
             );
         } else {

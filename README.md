@@ -29,7 +29,6 @@ $ npm run start
 
 -   [![react](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react?style=flat-square)](https://npmjs.com/package/react)
 -   [![react-dom](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-dom?style=flat-square)](https://npmjs.com/package/react-dom)
--   [![react-parallax-tilt](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/react-parallax-tilt?style=flat-square)](https://npmjs.com/package/react-parallax-tilt)
 
 ### Material-UI
 
@@ -53,4 +52,5 @@ $ npm run start
 -   [![date-fns](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/date-fns?style=flat-square)](https://npmjs.com/package/date-fns)
 -   [![lodash](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/lodash?style=flat-square)](https://npmjs.com/package/lodash)
 -   [![numeral](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/numeral?style=flat-square)](https://npmjs.com/package/numeral)
+-   [![swiper](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/swiper?style=flat-square)](https://npmjs.com/package/swiper)
 -   [![@svgr/webpack](https://img.shields.io/github/package-json/dependency-version/z-zacree/money-go-where/@svgr/webpack?style=flat-square)](https://npmjs.com/package/@svgr/webpack)

@@ -87,6 +87,23 @@ function GlobalTheme() {
                 a: {
                     textDecoration: "none",
                 },
+                ".swiper-wrapper": {
+                    display: "flex",
+                    alignItems: "center !important",
+                },
+
+                ".swiper-slide": {
+                    borderRadius: "24px",
+                    filter: "blur(4px)",
+                },
+
+                ".swiper-slide-active": {
+                    filter: "blur(0)",
+                },
+
+                ".swiper-3d .swiper-slide-shadow-left, .swiper-3d .swiper-slide-shadow-right": {
+                    backgroundImage: "none !important",
+                },
             }}
         />
     );

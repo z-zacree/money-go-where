@@ -20,6 +20,13 @@ export function fToNow(date) {
     });
 }
 
+export function vDate(bOa, date, targetDate = new Date()) {
+    if (bOa == "before") return date <= targetDate;
+    else if (bOa == "after") return date >= targetDate;
+    else if (bOa == "is") return date == targetDate;
+    else return;
+}
+
 // FlowChart
 export function getPast6Months() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

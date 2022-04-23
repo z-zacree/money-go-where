@@ -27,7 +27,9 @@ import CompareArrowsRoundedIcon from "@mui/icons-material/CompareArrowsRounded";
 
 // Firebase
 import { updateDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../utils/firebase";
+
+// Components
+import { CustomTextfield } from "../index";
 
 // Utils
 import { fNumber, fCurrency } from "../../utils/number.js";
@@ -181,7 +183,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
                                     setFromAccount(newValue);
                                 }}
                                 options={Object.keys(fields.accounts)}
-                                renderInput={(params) => <CustomTextField {...params} name="fromAccount" label="From account" />}
+                                renderInput={(params) => <CustomTextfield {...params} name="fromAccount" label="From account" />}
                                 disableCloseOnSelect
                                 required
                                 fullWidth
@@ -195,7 +197,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
                                         setToAccount(newValue);
                                     }}
                                     options={Object.keys(fields.accounts)}
-                                    renderInput={(params) => <CustomTextField {...params} name="toAccount" label="To account" />}
+                                    renderInput={(params) => <CustomTextfield {...params} name="toAccount" label="To account" />}
                                     disableCloseOnSelect
                                     required
                                     fullWidth
@@ -206,7 +208,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
                                     onChange={categoryChange}
                                     options={options}
                                     groupBy={(option) => option.header}
-                                    renderInput={(params) => <CustomTextField {...params} name="categories" label="Categories" />}
+                                    renderInput={(params) => <CustomTextfield {...params} name="categories" label="Categories" />}
                                     isOptionEqualToValue={(option, value) => option.label === value}
                                     limitTags={1}
                                     multiple
@@ -218,7 +220,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
                         <Grid item xs={12} md={4}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    renderInput={(props) => <CustomTextField {...props} fullWidth />}
+                                    renderInput={(props) => <CustomTextfield {...props} fullWidth />}
                                     label="Date"
                                     value={date}
                                     onChange={(newValue) => {
@@ -229,7 +231,7 @@ const ModalC = ({ state, setState, fields, doc }) => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <CustomTextField
+                            <CustomTextfield
                                 name="note"
                                 label="Notes"
                                 value={notes}
@@ -266,22 +268,6 @@ const ModalContainer = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.background.main,
 }));
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    "& label.Mui-focused": {
-        color: theme.palette.blackAndWhite.contrast.default,
-    },
-    "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": {
-            borderColor: theme.palette.blackAndWhite.contrast.default,
-        },
-    },
-    "& .MuiOutlinedInput-input": {
-        ":-webkit-autofill": {
-            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.default} inset`,
-            WebkitTextFillColor: theme.palette.blackAndWhite.contrast.default,
-        },
-    },
-}));
 const AmountTextField = styled(TextField)(({ theme }) => ({
     "& label.Mui-focused": { color: theme.palette.blackAndWhite.contrast.default },
     "& .MuiOutlinedInput-notchedOutline": { border: "none" },

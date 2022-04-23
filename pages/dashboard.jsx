@@ -1,4 +1,4 @@
-//Next
+// Next
 import Head from "next/head";
 
 // Material

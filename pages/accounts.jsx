@@ -1,41 +1,40 @@
-//Next
+// Next
 import Head from "next/head";
+
+// React
+import { useState } from "react";
 
 // Material
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 
-// Firestore
+// Firebase
 import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { firestore } from "../utils/firebase";
 
 // Components
-import { AccountCard } from "../components/accounts";
+import { CardCarousel, TransactionHistory } from "../components/accounts";
 import Loading from "../components/loading";
 
-const Account = ({ user }) => {
-    const [fields, loading] = useDocumentData(doc(firestore, "users", user.uid));
-    if (Loading) <Loading />;
-    else if (fields)
+// Utils
+import { useWindowDimensions } from "../utils/hooks";
+
+const Account = ({ user, fields }) => {
+    const [cardIndex, setCardIndex] = useState(0);
+    const { width } = useWindowDimensions();
+
+    return (
         <>
             <Head>
                 <meta name="description" content="Dashboard of Money go where" />
-                <title>MgW | Dashboard</title>
+                <title>MgW | Accounts</title>
             </Head>
             <Container maxWidth="lg">
-                <Grid container spacing={2}>
-                    {Object.keys(fields.accounts).map((accountName, index) => (
-                        <Grid item key={index} xs={12} md={6} lg={4}>
-                            <AccountCard accountName={accountName} accountValues={fields.accounts[accountName]} />
-                        </Grid>
-                    ))}
-                    <Grid item xs={12} md={6} lg={4}>
-                        <AccountCard create />
-                    </Grid>
-                </Grid>
+                <CardCarousel width={width} fields={fields} setIndex={setCardIndex} />
+                <TransactionHistory index={cardIndex} fields={fields} />
             </Container>
-        </>;
+        </>
+    );
 };
 
 export default Account;

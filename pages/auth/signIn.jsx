@@ -1,11 +1,11 @@
-// React
-import { useState } from "react";
-
 // Next
 import Head from "next/head";
 import Link from "next/link";
 
-// Material UI
+// React
+import { useState } from "react";
+
+// Material
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -23,6 +23,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { useRouter } from "next/router";
+
+// Components
+import { CustomTextfield } from "../../components";
 
 const SignIn = () => {
     const [emailError, setEmailError] = useState(false);
@@ -80,7 +83,7 @@ const SignIn = () => {
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
                         {emailError ? (
-                            <CustomTextField
+                            <CustomTextfield
                                 name="email"
                                 label="Email Address"
                                 autoComplete="email"
@@ -90,10 +93,10 @@ const SignIn = () => {
                                 helperText="The email you have entered is invalid"
                             />
                         ) : (
-                            <CustomTextField required fullWidth name="email" label="Email Address" autoComplete="email" autoFocus />
+                            <CustomTextfield required fullWidth name="email" label="Email Address" autoComplete="email" autoFocus />
                         )}
                         {passwordError ? (
-                            <CustomTextField
+                            <CustomTextfield
                                 name="password"
                                 label="Password"
                                 autoComplete="current-password"
@@ -105,7 +108,7 @@ const SignIn = () => {
                                 helperText="The password you have entered is invalid"
                             />
                         ) : (
-                            <CustomTextField
+                            <CustomTextfield
                                 name="password"
                                 label="Password"
                                 autoComplete="current-password"
@@ -141,22 +144,5 @@ const SignInButton = styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.blackAndWhite.contrast.default,
     ":hover": {
         backgroundColor: theme.palette.blackAndWhite.contrast.alpha80,
-    },
-}));
-
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    "& label.Mui-focused": {
-        color: theme.palette.blackAndWhite.contrast.default,
-    },
-    "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": {
-            borderColor: theme.palette.blackAndWhite.contrast.default,
-        },
-    },
-    "& .MuiOutlinedInput-input": {
-        ":-webkit-autofill": {
-            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.default} inset`,
-            WebkitTextFillColor: theme.palette.blackAndWhite.contrast.default,
-        },
     },
 }));

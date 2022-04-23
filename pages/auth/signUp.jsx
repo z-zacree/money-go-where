@@ -1,11 +1,11 @@
-// React
-import { useState } from "react";
-
 // Next
 import Head from "next/head";
 import Link from "next/link";
 
-// Material UI
+// React
+import { useState } from "react";
+
+// Material
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -27,6 +27,9 @@ import { auth, firestore } from "../../utils/firebase";
 import { useRouter } from "next/router";
 
 // Components
+import { CustomTextfield } from "../../components/";
+
+// Utils
 import { fDate } from "../../utils/date";
 
 const SignUp = () => {
@@ -131,11 +134,11 @@ const SignUp = () => {
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <CustomTextField name="displayName" label="Display Name" autoComplete="family-name" fullWidth autoFocus />
+                                <CustomTextfield name="displayName" label="Display Name" autoComplete="family-name" fullWidth autoFocus />
                             </Grid>
                             <Grid item xs={12}>
                                 {emailError ? (
-                                    <CustomTextField
+                                    <CustomTextfield
                                         name="email"
                                         label="Email Address"
                                         autoComplete="email"
@@ -145,12 +148,12 @@ const SignUp = () => {
                                         helperText="The email you have entered is invalid"
                                     />
                                 ) : (
-                                    <CustomTextField name="email" label="Email Address" autoComplete="email" required fullWidth />
+                                    <CustomTextfield name="email" label="Email Address" autoComplete="email" required fullWidth />
                                 )}
                             </Grid>
                             <Grid item xs={12}>
                                 {passwordError ? (
-                                    <CustomTextField
+                                    <CustomTextfield
                                         name="password"
                                         label="Password"
                                         autoComplete="new-password"
@@ -161,7 +164,7 @@ const SignUp = () => {
                                         helperText="The password you have entered is invalid"
                                     />
                                 ) : (
-                                    <CustomTextField
+                                    <CustomTextfield
                                         name="password"
                                         label="Password"
                                         autoComplete="new-password"
@@ -199,22 +202,5 @@ const SignUpButton = styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.blackAndWhite.contrast.default,
     ":hover": {
         backgroundColor: theme.palette.blackAndWhite.contrast.alpha80,
-    },
-}));
-
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    "& label.Mui-focused": {
-        color: theme.palette.blackAndWhite.contrast.default,
-    },
-    "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": {
-            borderColor: theme.palette.blackAndWhite.contrast.default,
-        },
-    },
-    "& .MuiOutlinedInput-input": {
-        ":-webkit-autofill": {
-            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.default} inset`,
-            WebkitTextFillColor: theme.palette.blackAndWhite.contrast.default,
-        },
     },
 }));

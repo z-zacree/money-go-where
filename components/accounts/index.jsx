@@ -1,1 +1,2 @@
-export { default as AccountCard } from "./card";
+export { default as TransactionHistory } from "./transactionHistory";
+export { default as CardCarousel } from "./cardCarousel";
